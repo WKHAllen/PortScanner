@@ -58,7 +58,7 @@ class PortScanner:
             self.portscan(self.q.get())
             self.q.task_done()
 
-    def scan(self):
+    def start(self):
         self.ping()
         maxthreads = self.maxThreads()
         if self.workers is None:
@@ -104,7 +104,7 @@ def main():
         except:
             print "ERROR: failed to parse arguments\nUsage: <target (str)> [start (int)] [end (int)] [workers (int)]"
         try:
-            ports = s.scan()
+            ports = s.start()
         except PortScanError:
             print "ERROR: failed to connect to the target"
         else:
