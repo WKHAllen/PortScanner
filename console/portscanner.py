@@ -11,9 +11,9 @@ class PortScanError(Exception):
     pass
 
 class PortScanner:
-    def __init__(self, target = "127.0.0.1", start = 1, end = 65536, workers = None):
+    def __init__(self, target = "127.0.0.1", begin = 1, end = 65536, workers = None):
         self.target = target
-        self.start = start
+        self.begin = begin
         self.end = end
         self.workers = workers
         self.printLock = threading.Lock()
@@ -66,7 +66,7 @@ class PortScanner:
         elif self.workers > maxthreads:
             self.workers = maxthreads
         time.sleep(1)
-        for port in range(self.start, self.end + 1):
+        for port in range(self.begin, self.end + 1):
             self.q.put(port)
         for _ in range(self.workers):
             try:
@@ -102,7 +102,7 @@ def main():
             elif len(args) >= 4:
                 s = PortScanner(args[0], int(args[1]), int(args[2]), int(args[3]))
         except:
-            print "ERROR: failed to parse arguments\nUsage: <target (str)> [start (int)] [end (int)] [workers (int)]"
+            print "ERROR: failed to parse arguments\nUsage: <target (str)> [begin (int)] [end (int)] [workers (int)]"
         try:
             ports = s.start()
         except PortScanError:
